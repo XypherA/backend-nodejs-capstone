@@ -23,7 +23,7 @@ app.use(express.json());
 // Route files
 
 // Auth Routes
-// const authRoutes = require('./routes/authRoutes'); // Step 2: import authRoutes
+const authRoutes = require('./routes/authRoutes'); // Step 2: import authRoutes
 
 // Items API
 const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes'); // Task 1: import secondChanceItemsRoutes
@@ -37,7 +37,7 @@ const logger = require('./logger');
 app.use(pinoHttp({ logger }));
 
 // Use Routes
-// app.use('/api/auth', authRoutes); // Step 2: add authRoutes to server
+app.use('/api/auth', authRoutes); // Step 2: add authRoutes to server
 app.use('/api/secondchance/items', secondChanceItemsRoutes); // Task 2: add secondChanceItemsRoutes to server
 app.use('/api/secondchance/search', searchRoutes); // Task 2: add searchRoutes to server
 
