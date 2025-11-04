@@ -9,29 +9,28 @@ const {loadData} = require("./util/import-mongo/index");
 
 
 const app = express();
-app.use("*",cors());
+app.use("*", cors());
 const port = 3060;
 
 // Connect to MongoDB; we just do this one time
-connectToDatabase().then(() => {
+connectToDatabase()
+  .then(() => {
     pinoLogger.info('Connected to DB');
-})
-    .catch((e) => console.error('Failed to connect to DB', e));
-
+  })
+  .catch((e) => console.error('Failed to connect to DB', e));
 
 app.use(express.json());
 
 // Route files
 
-// authRoutes Step 2: import the authRoutes and store in a constant called authRoutes
-//{{insert code here}}
+// Auth Routes
+// const authRoutes = require('./routes/authRoutes'); // Step 2: import authRoutes
 
-// Items API Task 1: import the secondChanceItemsRoutes and store in a constant called secondChanceItemsRoutes
-//{{insert code here}}
+// Items API
+const secondChanceItemsRoutes = require('./routes/secondChanceItemsRoutes'); // Task 1: import secondChanceItemsRoutes
 
-// Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-//{{insert code here}}
-
+// Search API
+const searchRoutes = require('./routes/searchRoutes'); // Task 1: import searchRoutes
 
 const pinoHttp = require('pino-http');
 const logger = require('./logger');
@@ -39,26 +38,20 @@ const logger = require('./logger');
 app.use(pinoHttp({ logger }));
 
 // Use Routes
-// authRoutes Step 2: add the authRoutes and to the server by using the app.use() method.
-//{{insert code here}}
-
-// Items API Task 2: add the secondChanceItemsRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
+// app.use('/api/auth', authRoutes); // Step 2: add authRoutes to server
+app.use('/api/secondchance/items', secondChanceItemsRoutes); // Task 2: add secondChanceItemsRoutes to server
+app.use('/api/search', searchRoutes); // Task 2: add searchRoutes to server
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
+  console.error(err);
+  res.status(500).send('Internal Server Error');
 });
 
-app.get("/",(req,res)=>{
-    res.send("Inside the server")
-})
+app.get("/", (req, res) => {
+  res.send("Inside the server");
+});
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
